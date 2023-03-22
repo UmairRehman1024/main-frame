@@ -8,6 +8,10 @@ module.exports = {
             .setName('book')
             .setDescription('gives a formatted citation for a book')
             .addStringOption(option => 
+                option.setName('title')
+                    .setDescription('Title of the book')
+                    .setRequired(true))
+            .addStringOption(option => 
                 option.setName('surname')
                     .setDescription('Authors Surname')
                     .setRequired(true))
@@ -17,18 +21,14 @@ module.exports = {
                     .setRequired(true))
             .addStringOption(option => 
                 option.setName('year')
-                    .setDescription('Year Published')
+                    .setDescription('Year Published. If no year, leave blank')
                     .setRequired(true))
-            .addStringOption(option => 
-                option.setName('title')
-                    .setDescription('Title of the book')
-                    .setRequired(true))
-        
+
+        )
+        .addSubcommand(subcommand => subcommand
+            .setName('view')
+            .setDescription('View your timetable')
         ),
-        // .addSubcommand(subcommand => subcommand
-        //     .setName('view')
-        //     .setDescription('View your timetable')
-        // )
         // .addSubcommand(subcommand => subcommand
         //     .setName('delete')
         //     .setDescription('Deletes your timetable data')    
@@ -42,9 +42,18 @@ module.exports = {
                 let year = interaction.options.getString('year');
                 let title = interaction.options.getString('title');
 
+                console.log(year)
+
+                if (year === null){
+                    year = "n.d."
+                }
+
                 let citation = surname + ", " + firstname.charAt(0) + ". (" + year + ") " + title
 
-                await interaction.reply(citation);
+                let inText = "(" + surname + ", " + year + ")"
+
+                let reply = "reference list - " + citation + "\n in-text - " + inText 
+                await interaction.reply(reply);
         }
 
         
